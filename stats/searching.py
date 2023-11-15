@@ -13,6 +13,7 @@ from .confidence_interval import calculate_confidence_interval
 from .hypothesis_test import perform_hypothesis_test
 from .hypothesis_test import TestTypeEnum
 from .statistics_aggregator import Statistics_Aggregator
+from .searching_data import SearchingData
 
 class Result:
     def __init__(self, results_aggregator, attribute, value):
@@ -207,8 +208,15 @@ class Searching:
         results_str += "\nLinreg Model:\n"
         results_str += coeff_str
         
+        sd = SearchingData()
+        sd.raw_results = raw_results
+        sd.coeffs = coeffs
+        sd.roots = roots
+        sd.real_roots = real_roots
+        sd.poss_roots = possible_answers
+        sd.results_str = results_str
 
-        return results_str
+        return sd
         
 
 
