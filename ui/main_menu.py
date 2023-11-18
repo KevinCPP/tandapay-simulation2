@@ -6,6 +6,12 @@ from PySide2.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayou
 from PySide2.QtGui import QFont
 from PySide2.QtCore import Qt, QSize
 
+import matplotlib
+matplotlib.use("Qt5Agg")
+
+
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as stats
@@ -95,9 +101,9 @@ class Main_Menu(QMainWindow):
         plt.plot(x, y)
 
         # Adding titles and labels
-        plt.title('Normal Distribution of Average Defectors')
-        plt.xlabel('Average Defectors')
-        plt.ylabel('Probability Density')
+        plt.title(f'Normal Distribution of {self.uic.ov_obj.selected_graph}', fontsize=14, fontweight='bold')
+        plt.xlabel(f'{self.uic.ov_obj.selected_graph}', fontsize=12, fontweight='bold')
+        plt.ylabel('Probability Density', fontsize=12, fontweight='bold')
 
         # Showing the plot
         plt.show()
