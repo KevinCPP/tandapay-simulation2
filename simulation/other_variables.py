@@ -30,8 +30,12 @@ class Other_Variables:
         self._test_outcome = "num_wins" 
         self.value_to_test = 0.500
 
+        self.selected_graph = "num_wins"
+
         # other
         self.settings_path = "config/settings.ini"
+
+        
 
     @property
     def test_type(self):
