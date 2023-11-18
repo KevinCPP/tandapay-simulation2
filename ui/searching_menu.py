@@ -127,12 +127,17 @@ class Searching_Menu:
         plt.plot(values, draws, color='green', marker='s', label='Draws')
         plt.plot(values, losses, color='red', marker='^', label='Losses')
         
-        # adding labels, title, and the legend/key
-        plt.xlabel('Values')
-        plt.ylabel('Number')
-        plt.title('Wins, Draws, and Losses Over Values')
+
+        # Adding bold labels, title, and the legend/key
+        plt.xlabel('Values', fontsize=12, fontweight='bold')
+        plt.ylabel('Number', fontsize=12, fontweight='bold')
+        plt.title('Wins, Draws, and Losses Over Values', fontsize=14, fontweight='bold')
         plt.legend()
-        
+
+        # Optional: adding a grid for better readability
+        plt.grid(True)
+
+       
         # Showing the plot
         plt.show()
 

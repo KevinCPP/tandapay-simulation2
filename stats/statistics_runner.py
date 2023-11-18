@@ -66,4 +66,4 @@ class Statistics_Runner:
             \tResult: {legible_str}
             """
 
-        return full_string, self.statistics_aggregator
+        return full_string

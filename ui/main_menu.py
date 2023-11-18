@@ -6,6 +6,10 @@ from PySide2.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayou
 from PySide2.QtGui import QFont
 from PySide2.QtCore import Qt, QSize
 
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+
 from .ui_element_factory import UI_Element_Factory
 from .ui_context import UI_Context
 from .settings_menu import Settings_Menu
@@ -76,9 +80,29 @@ class Main_Menu(QMainWindow):
         self.results_window = Results_Window("Statistics Results")
         self.results_window.set_results_text(result_str)
         self.results_window.show()
+
         
-        mean = statistics_aggregator.mean_dict[self.ov.selected_graph]
-        std = statistics_aggregator.std_dict[self.ov.selected_graph]
+
+
+        mean = statistics_aggregator.mean_dict[self.uic.ov_obj.selected_graph]
+        std_dev = statistics_aggregator.std_dict[self.uic.ov_obj.selected_graph]
+
+        # Creating a range around the mean, covering 99.7% of the data (3 standard deviations)
+        x = np.linspace(mean - 3*std_dev, mean + 3*std_dev, 1000)
+        y = stats.norm.pdf(x, mean, std_dev)
+
+        # Plotting the bell curve
+        plt.plot(x, y)
+
+        # Adding titles and labels
+        plt.title('Normal Distribution of Average Defectors')
+        plt.xlabel('Average Defectors')
+        plt.ylabel('Probability Density')
+
+        # Showing the plot
+        plt.show()
+
+
 
     def run_searching(self):
         self.searching_menu = Searching_Menu(self.uic)
