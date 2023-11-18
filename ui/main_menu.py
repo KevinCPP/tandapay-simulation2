@@ -72,10 +72,11 @@ class Main_Menu(QMainWindow):
         self.results_window.show()
 
     def run_statistics(self):
-        result_str = self.uic.run_statistics()
+        result_str, statistics_aggregator = self.uic.run_statistics()
         self.results_window = Results_Window("Statistics Results")
         self.results_window.set_results_text(result_str)
         self.results_window.show()
+
 
     def run_searching(self):
         self.searching_menu = Searching_Menu(self.uic)

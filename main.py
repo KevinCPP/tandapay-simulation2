@@ -42,7 +42,7 @@ class Main:
         statistics_runner = Statistics_Runner(self.uic.ev_obj, self.uic.pv_obj, self.uic.ov_obj)
         result_str = statistics_runner.get_string()
         self.uic.history_db_obj.add_result("Statistics Run", self.version, result_str)
-        return statistics_runner.get_string()
+        return statistics_runner.get_string(), statistics_runner.statistics_aggregator
 
     def run_searching_callback(self, attribute, target_percent, outcome, min_value, max_value, steps, order):
         searching = Searching(self.uic.ev_obj, self.uic.pv_obj, self.uic.ov_obj)
