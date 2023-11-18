@@ -76,7 +76,9 @@ class Main_Menu(QMainWindow):
         self.results_window = Results_Window("Statistics Results")
         self.results_window.set_results_text(result_str)
         self.results_window.show()
-
+        
+        mean = statistics_aggregator.mean_dict[self.ov.selected_graph]
+        std = statistics_aggregator.std_dict[self.ov.selected_graph]
 
     def run_searching(self):
         self.searching_menu = Searching_Menu(self.uic)
