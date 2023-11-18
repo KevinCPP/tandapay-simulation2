@@ -48,7 +48,7 @@ class Main:
         searching = Searching(self.uic.ev_obj, self.uic.pv_obj, self.uic.ov_obj)
         searching_data = searching.perform_full_search(attribute, target_percent, outcome, min_value, max_value, steps, order)
         self.uic.history_db_obj.add_result("Searching Run", self.version, searching_data.results_str)
-        return searching_data.results_str 
+        return searching_data
     
     def run_debug_callback(self):
         result_dict = exec_simulation_debug(self.uic.ev_obj, self.uic.pv_obj)
