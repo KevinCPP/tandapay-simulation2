@@ -129,7 +129,7 @@ class Searching_Menu:
         
 
         # Adding bold labels, title, and the legend/key
-        plt.xlabel('Values', fontsize=12, fontweight='bold')
+        plt.xlabel('Assigned Defector', fontsize=12, fontweight='bold')
         plt.ylabel('Number', fontsize=12, fontweight='bold')
         plt.title('Wins, Draws, and Losses Over Values', fontsize=14, fontweight='bold')
         plt.legend()
