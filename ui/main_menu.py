@@ -90,23 +90,23 @@ class Main_Menu(QMainWindow):
         
 
 
-        mean = statistics_aggregator.mean_dict[self.uic.ov_obj.selected_graph]
-        std_dev = statistics_aggregator.std_dict[self.uic.ov_obj.selected_graph]
+       # mean = statistics_aggregator.mean_dict[self.uic.ov_obj.selected_graph]
+       # std_dev = statistics_aggregator.std_dict[self.uic.ov_obj.selected_graph]
 
         # Creating a range around the mean, covering 99.7% of the data (3 standard deviations)
-        x = np.linspace(mean - 3*std_dev, mean + 3*std_dev, 1000)
-        y = stats.norm.pdf(x, mean, std_dev)
+       # x = np.linspace(mean - 3*std_dev, mean + 3*std_dev, 1000)
+       # y = stats.norm.pdf(x, mean, std_dev)
 
         # Plotting the bell curve
-        plt.plot(x, y)
+       # plt.plot(x, y)
 
         # Adding titles and labels
-        plt.title(f'Normal Distribution of {self.uic.ov_obj.selected_graph}', fontsize=14, fontweight='bold')
-        plt.xlabel(f'{self.uic.ov_obj.selected_graph}', fontsize=12, fontweight='bold')
-        plt.ylabel('Probability Density', fontsize=12, fontweight='bold')
+       # plt.title(f'Normal Distribution of {self.uic.ov_obj.selected_graph}', fontsize=14, fontweight='bold')
+       # plt.xlabel(f'{self.uic.ov_obj.selected_graph}', fontsize=12, fontweight='bold')
+       # plt.ylabel('Probability Density', fontsize=12, fontweight='bold')
 
         # Showing the plot
-        plt.show()
+       # plt.show()
 
 
 
