@@ -13,6 +13,12 @@ from .ui_context import UI_Context
 from stats.searching_attributes import searching_attributes
 from simulation.other_variables import OutcomeEnum
 
+import matplotlib
+matplotlib.use('Qt5Agg')
+
+import numpy as np
+import matplotlib.pyplot as plt
+
 class Searching_Menu:
     def __init__(self, ui_context, widget_width=None):
         self.uic = ui_context
@@ -95,8 +101,44 @@ class Searching_Menu:
         order = self.uief.getValue(self.field6_label)
         attribute = self.uief.getValue(self.field7_label)
 
-        result_str = self.uic.run_searching(attribute, target_percent, outcome, min_value, max_value, steps, order)
+        searching_data = self.uic.run_searching(attribute, target_percent, outcome, min_value, max_value, steps, order)
         self.results_window = Results_Window("Search Results")
-        self.results_window.set_results_text(result_str)
+        self.results_window.set_results_text(searching_data.results_str)
         self.results_window.setWindowFlags(Qt.Window)
         self.results_window.show()
+        
+        # get values
+        values = searching_data.raw_results[0]
+
+        # get wins
+        wins = searching_data.raw_results[1]
+
+        # get draws
+        draws = searching_data.raw_results[2]
+
+        # get losses
+        losses = searching_data.raw_results[3]
+        
+        # create a plot
+        plt.figure(figsize=(10,6))
+
+        # plot each line with different colors
+        plt.plot(values, wins, color='blue', marker='o', label='Wins')
+        plt.plot(values, draws, color='green', marker='s', label='Draws')
+        plt.plot(values, losses, color='red', marker='^', label='Losses')
+        
+
+        # Adding bold labels, title, and the legend/key
+        plt.xlabel('Assigned Defector', fontsize=12, fontweight='bold')
+        plt.ylabel('Number', fontsize=12, fontweight='bold')
+        plt.title('Wins, Draws, and Losses Over Values', fontsize=14, fontweight='bold')
+        plt.legend()
+
+        # Optional: adding a grid for better readability
+        plt.grid(True)
+
+       
+        # Showing the plot
+        plt.show()
+
+

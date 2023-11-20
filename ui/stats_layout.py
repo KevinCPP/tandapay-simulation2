@@ -34,6 +34,9 @@ class Stats_Layout:
         self.ov6_label = "Value to test"
         self.ov6_tooltip = "which value do you want to test against? (should be a percentage. Accepts decimal values, such as 66.67)"
 
+        self.ov7_label = "Select Graph"
+        self.ov7_tooltip = "select which statistics outcome you would like to plot on a graph"
+
     def save(self):
         self.uic.ov_obj.trial_sample_size   = self.uief.getValue(self.ov1_label)
         self.uic.ov_obj.trial_count         = self.uief.getValue(self.ov2_label)
@@ -41,6 +44,7 @@ class Stats_Layout:
         self.uic.ov_obj.test_type           = TestTypeEnum[self.uief.getValue(self.ov4_label)]
         self.uic.ov_obj.test_outcome        = self.uief.getValue(self.ov5_label)
         self.uic.ov_obj.value_to_test       = self.uief.getValue(self.ov6_label)
+        self.uic.ov_obj.selected_graph      = self.uief.getValue(self.ov7_label)
         return self.uic
 
     def get_stats_layout(self) -> QVBoxLayout:
@@ -74,5 +78,9 @@ class Stats_Layout:
 
         self.ov6_hbox = self.uief.make_float_entry_element(self.ov6_label, self.ov6_tooltip, self.uic.ov_obj.value_to_test, 0.0, 100000.0)
         layout.addLayout(self.ov6_hbox)
+        
+        options = statistics_attributes
+        self.ov7_hbox = self.uief.make_dropdown_entry_element(self.ov7_label, options, self.ov7_tooltip, self.uic.ov_obj.selected_graph)
+        layout.addLayout(self.ov7_hbox)
 
         return layout
