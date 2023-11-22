@@ -66,6 +66,9 @@ class Main_Menu(QMainWindow):
         self.run_searching_btn = self.uief.make_push_button_element("Run Searching", None, self.run_searching)
         self.layout.addWidget(self.run_searching_btn)
 
+        self.run_validate_btn = self.uief.make_push_button_element("Run Proof", None, self.run_validate)
+        self.layout.addWidget(self.run_validate_btn)
+
         self.run_debug_btn = self.uief.make_push_button_element("Run Debug", None, self.run_debug)
         self.layout.addWidget(self.run_debug_btn)
 
@@ -97,9 +100,6 @@ class Main_Menu(QMainWindow):
         self.results_window.set_results_text(result_str)
         self.results_window.show()
 
-        
-
-
         mean = statistics_aggregator.mean_dict[self.uic.ov_obj.selected_graph]
         std_dev = statistics_aggregator.std_dict[self.uic.ov_obj.selected_graph]
 
@@ -118,11 +118,16 @@ class Main_Menu(QMainWindow):
         # Showing the plot
         plt.show()
 
-
-
     def run_searching(self):
         self.searching_menu = Searching_Menu(self.uic)
         self.searching_menu.open_searching_menu()
+
+    def run_validate(self):
+        validate_data = self.uic.run_validate()
+        self.results_window = Results_Window("Proof Results")
+        self.results_window.set_results_text(validate_data.results_str)
+        self.results_window.show()
+
 
     def run_debug(self):
         result_str = self.uic.run_debug()

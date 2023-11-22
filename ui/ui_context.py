@@ -7,6 +7,7 @@ class UI_Context:
         self.run_searching = None
         self.save_settings = None
         self.run_debug = None
+        self.run_validate = None
 #        self.history = None
         self.about = None
 

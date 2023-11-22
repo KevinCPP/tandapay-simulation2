@@ -24,6 +24,7 @@ class Main:
         self.uic.run_statistics = self.run_statistics_callback
         self.uic.run_searching = self.run_searching_callback
         self.uic.save_settings = self.save_settings_callback
+        self.uic.run_validate = self.run_validate_callback
         self.uic.run_debug = self.run_debug_callback
         self.uic.history = self.run_history_callback
         self.uic.about = self.run_about_callback
@@ -49,7 +50,14 @@ class Main:
         searching_data = searching.perform_full_search(attribute, target_percent, outcome, min_value, max_value, steps, order)
         self.uic.history_db_obj.add_result("Searching Run", self.version, searching_data.results_str)
         return searching_data
-    
+   
+    def run_validate_callback(self):
+        class temp: 
+            def __init__(self):
+                self.results_str = "example"
+
+        return temp()
+
     def run_debug_callback(self):
         result_dict = exec_simulation_debug(self.uic.ev_obj, self.uic.pv_obj)
         return f"""
