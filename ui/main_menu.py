@@ -39,7 +39,6 @@ class Main_Menu(QMainWindow):
             }
             QPushButton {
                 background-color: #555555;
-                border: 3px solid #FFFFFF;
                 padding: 5px;
                 color: white;
             }
@@ -66,7 +65,7 @@ class Main_Menu(QMainWindow):
         self.run_searching_btn = self.uief.make_push_button_element("Run Searching", None, self.run_searching)
         self.layout.addWidget(self.run_searching_btn)
 
-        self.run_validate_btn = self.uief.make_push_button_element("Run Proof", None, self.run_validate)
+        self.run_validate_btn = self.uief.make_push_button_element("Run Validate", None, self.run_validate)
         self.layout.addWidget(self.run_validate_btn)
 
         self.run_debug_btn = self.uief.make_push_button_element("Run Debug", None, self.run_debug)
@@ -124,7 +123,7 @@ class Main_Menu(QMainWindow):
 
     def run_validate(self):
         validate_data = self.uic.run_validate()
-        self.results_window = Results_Window("Proof Results")
+        self.results_window = Results_Window("Validate Results")
         self.results_window.set_results_text(validate_data.results_str)
         self.results_window.show()
 
