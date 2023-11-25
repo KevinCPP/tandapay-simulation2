@@ -108,7 +108,7 @@ class Searching_Menu:
         self.results_window.show()
         
         # get values
-        values = searching_data.raw_results[0]
+        values = searching_data.raw_results[0]*100
 
         # get wins
         wins = searching_data.raw_results[1]
@@ -129,8 +129,8 @@ class Searching_Menu:
         
 
         # Adding bold labels, title, and the legend/key
-        plt.xlabel('Assigned Defector', fontsize=12, fontweight='bold')
-        plt.ylabel('Number', fontsize=12, fontweight='bold')
+        plt.xlabel('Assigned Defector Percentage', fontsize=12, fontweight='bold')
+        plt.ylabel('Likelihood of Result', fontsize=12, fontweight='bold')
         plt.title('Wins, Draws, and Losses Over Values', fontsize=14, fontweight='bold')
         plt.legend()
 
@@ -140,5 +140,4 @@ class Searching_Menu:
        
         # Showing the plot
         plt.show()
-
 

@@ -88,10 +88,24 @@ class Main_Menu(QMainWindow):
         self.setCentralWidget(self.central_widget)
 
     def run_simulation(self):
-        result_str = self.uic.run_simulation()
+        results_aggregator = self.uic.run_simulation()
         self.results_window = Results_Window("Simulation Results")
-        self.results_window.set_results_text(result_str)
+        self.results_window.set_results_text(results_aggregator.get_string())
         self.results_window.show()
+
+        # Categories for the bar graph
+        categories = ['Wins', 'Draws', 'Losses']
+
+        # Corresponding values for each category
+        values = [results_aggregator.num_wins, results_aggregator.num_draws, results_aggregator.num_losses]
+
+        # Creating the bar graph
+        plt.figure(figsize=(8, 6))
+        plt.bar(categories, values, color=['green', 'blue', 'red'])
+        plt.title('Simulation Results: Wins, Draws, and Losses', fontweight='bold')
+        plt.xlabel('Categories', fontweight='bold')
+        plt.ylabel('Number of Occurrences', fontweight='bold')
+        plt.show()
 
     def run_statistics(self):
         result_str, statistics_aggregator = self.uic.run_statistics()
