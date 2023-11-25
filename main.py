@@ -34,9 +34,8 @@ class Main:
 
     def run_simulation_callback(self) -> str:
         results_aggregator = exec_simulation_multiple(self.uic.ev_obj, self.uic.pv_obj, self.uic.ov_obj.sample_size)
-        result_str = results_aggregator.get_string()
-        self.uic.history_db_obj.add_result("Simulation Run", self.version, result_str)
-        return result_str
+        self.uic.history_db_obj.add_result("Simulation Run", self.version, results_aggregator.get_string())
+        return results_aggregator
 
     def run_statistics_callback(self):
         statistics_runner = Statistics_Runner(self.uic.ev_obj, self.uic.pv_obj, self.uic.ov_obj)
