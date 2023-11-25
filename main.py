@@ -4,9 +4,11 @@ from simulation.environment_variables import Environment_Variables
 from simulation.pricing_variables import Pricing_Variables
 from simulation.other_variables import *
 from stats.statistics_runner import Statistics_Runner
+from validation.validator import Validator
 from stats.searching import Searching
 from util.ini_handler import INI_Handler
 from util.results_db import Results_DB
+
 
 class Main:
     def __init__(self):
@@ -19,6 +21,14 @@ class Main:
         self.uic.pv_obj = self.ini_handler.read_pricing_variables()
         self.uic.ov_obj = self.ini_handler.read_other_variables()
         
+        # debugging validator
+#        results = []
+#        for i in range(10):
+#            validator = Validator(self.uic.ev_obj, self.uic.pv_obj, self.uic.ov_obj, .23)
+#            results.append(validator.validate(5))
+
+        print(f"validator results: {results}")
+
         # set callbacks
         self.uic.run_simulation = self.run_simulation_callback
         self.uic.run_statistics = self.run_statistics_callback

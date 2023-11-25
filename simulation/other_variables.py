@@ -34,7 +34,9 @@ class Other_Variables:
 
         # other
         self.settings_path = "config/settings.ini"
-
+        
+        self.validator_num_samples = 200
+        self.validator_sample_size = 200
         
 
     @property

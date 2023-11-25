@@ -10,8 +10,6 @@ import matplotlib
 matplotlib.use("Qt5Agg")
 
 
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as stats
