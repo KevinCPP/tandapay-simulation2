@@ -6,6 +6,7 @@ from PySide2.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayou
 from PySide2.QtGui import QFont
 from PySide2.QtCore import Qt, QSize
 
+from .validator_layout import Validator_Layout
 from .stats_layout import Stats_Layout
 from .iv_layout import IV_Layout
 
@@ -22,10 +23,15 @@ class Settings_Menu:
         # get layout for initial values:
         self.iv_layout = IV_Layout(self.uic, widget_width)
         self.stats_layout = Stats_Layout(self.uic, widget_width)
+        self.validator_layout = Validator_Layout(self.uic, widget_width)
 
     def get_settings_layout(self) -> QHBoxLayout:
         layout = self.iv_layout.get_iv_layout()
-        layout.addLayout(self.stats_layout.get_stats_layout())
+        
+        rcolumn = self.stats_layout.get_stats_layout()
+        rcolumn.addLayout(self.validator_layout.get_validator_layout())
+
+        layout.addLayout(rcolumn)
         return layout
 
     def get_ok_cancel_layout(self) -> QHBoxLayout:
