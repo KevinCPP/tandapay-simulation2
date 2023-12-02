@@ -36,9 +36,10 @@ class Other_Variables:
         self.settings_path = "config/settings.ini"
         
         # validator
-        self.validator_num_samples = 200
-        self.validator_sample_size = 200
-        self.maxsd = 5
+        self.validator_repeats = 10         # how many times will validator repeat to get a mean/std. dev?
+        self.validator_num_samples = 200    # how many samples will validator use?
+        self.validator_sample_size = 200    # how many runs per sample?
+        self.maxsd = 5                      # max standard deviation away from defaults that the min/max allowable values are allowed to be
 
     @property
     def test_type(self):

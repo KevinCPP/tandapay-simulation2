@@ -31,7 +31,7 @@ class OV_Layout:
         header.setAlignment(Qt.AlignCenter)
         layout.addWidget(header)
 
-        ov1_hbox = self.uief.make_numeric_entry_element(self.ov1_label, self.ov1_label, 1, 0, 1e9)
+        ov1_hbox = self.uief.make_numeric_entry_element(self.ov1_label, self.ov1_label, self.ov.sample_size, 0, 1e9)
         layout.addLayout(ov1_hbox)
 
         return layout

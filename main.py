@@ -22,12 +22,12 @@ class Main:
         self.uic.ov_obj = self.ini_handler.read_other_variables()
         
         # debugging validator
-        results = []
-        for i in range(10):
-            validator = Validator(self.uic.ov_obj, .23)
-            results.append(validator.validate())
-
-        print(f"validator results: {results}")
+#        results = []
+#        for i in range(10):
+#            validator = Validator(self.uic.ov_obj, .23)
+#            results.append(validator.validate())
+#
+#        print(f"validator results: {results}")
 
         # set callbacks
         self.uic.run_simulation = self.run_simulation_callback
@@ -40,7 +40,7 @@ class Main:
         self.uic.about = self.run_about_callback
 
         self.uic.history_db_obj = Results_DB()
-
+        
         ui.initialize(self.uic)
 
     def run_simulation_callback(self) -> str:
@@ -75,6 +75,7 @@ class Main:
         Wrote user record to CSV: {result_dict['user_csv_path']}
         Wrote system record to CSV: {result_dict['sys_csv_path']}
         """
+
     def save_settings_callback(self):
         self.ini_handler.write_environment_variables(self.uic.ev_obj)
         self.ini_handler.write_pricing_variables(self.uic.pv_obj)
