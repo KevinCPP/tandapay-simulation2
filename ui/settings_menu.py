@@ -60,5 +60,6 @@ class Settings_Menu:
     def save_and_close(self):
         self.iv_layout.save()
         self.stats_layout.save() 
+        self.validator_layout.save()
         self.dialog.accept()
 

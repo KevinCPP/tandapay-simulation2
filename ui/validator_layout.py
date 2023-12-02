@@ -35,7 +35,7 @@ class Validator_Layout:
         self.uic.ov_obj.validator_num_samples = self.uief.getValue(self.ov2_label) 
         self.uic.ov_obj.validator_sample_size = self.uief.getValue(self.ov3_label) 
         self.uic.ov_obj.maxsd                 = self.uief.getValue(self.ov4_label) 
-        return self.uic
+        return self.uic.ov_obj
 
     def get_validator_layout(self) -> QVBoxLayout:
         layout = QVBoxLayout()
