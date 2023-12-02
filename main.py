@@ -22,10 +22,10 @@ class Main:
         self.uic.ov_obj = self.ini_handler.read_other_variables()
         
         # debugging validator
-#        results = []
-#        for i in range(10):
-#            validator = Validator(self.uic.ev_obj, self.uic.pv_obj, self.uic.ov_obj, .23)
-#            results.append(validator.validate(5))
+        results = []
+        for i in range(10):
+            validator = Validator(self.uic.ov_obj, .23)
+            results.append(validator.validate())
 
         print(f"validator results: {results}")
 

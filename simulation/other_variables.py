@@ -26,18 +26,19 @@ class Other_Variables:
 
         self.alpha = 0.05               # alpha value to be used for confidence intervals & hypothesis testing
         
+        # searching
         self._test_type = TestTypeEnum.TWOTAILED
         self._test_outcome = "num_wins" 
         self.value_to_test = 0.500
-
         self.selected_graph = "num_wins"
-
-        # other
+        
+        # settings path
         self.settings_path = "config/settings.ini"
         
+        # validator
         self.validator_num_samples = 200
         self.validator_sample_size = 200
-        
+        self.maxsd = 5
 
     @property
     def test_type(self):
