@@ -1,4 +1,6 @@
 import ui
+import datetime
+
 from simulation.simulation import *
 from simulation.environment_variables import Environment_Variables
 from simulation.pricing_variables import Pricing_Variables
@@ -61,12 +63,18 @@ class Main:
         self.uic.history_db_obj.add_result("Searching Run", self.version, searching_data.results_str)
         return searching_data
    
-    def run_validate_callback(self):
-        class temp: 
-            def __init__(self):
-                self.results_str = "example"
+    def run_validate_callback(self, perc_honest_defectors, progress_bar_callback=None):
+        validator_runs = []
+        total_progress = 0.0
+        def single_run_progress_callback(progress: float):
+            progress_bar_callback(total_progress + (progress / self.uic.ov_obj.validator_repeats))
 
-        return temp()
+        for i in range(self.uic.ov_obj.validator_repeats):
+            validator = Validator(self.uic.ov_obj, perc_honest_defectors, single_run_progress_callback)
+            validator_runs.append(validator.validate())
+            total_progress = (i+1) / self.uic.ov_obj.validator_repeats
+
+        return validator_runs
 
     def run_debug_callback(self):
         result_dict = exec_simulation_debug(self.uic.ev_obj, self.uic.pv_obj)

@@ -13,13 +13,14 @@ import copy
 
 
 class Validator:
-    def __init__(self, ov, perc_honest_defectors):
+    def __init__(self, ov, perc_honest_defectors, progress_bar_callback=None):
         # other variables object, will contain information such as the
         # sample size, number of trials, and the max standard deviations
         self.ov = ov
         
         # defector value that we want to validate
         self.perc_honest_defectors = perc_honest_defectors
+        self.pbc = progress_bar_callback
         
         # where the average will be stored
         self.running_avg = None
@@ -52,7 +53,9 @@ class Validator:
             pv = Pricing_Variables.sample(self.pv_vars_to_sample, self.ov.maxsd)
             results = exec_simulation_multiple(ev, pv, self.ov.validator_sample_size)
             self.running_avg += results.num_wins
+            self.pbc(((i+1) / self.ov.validator_num_samples))
         
         self.running_avg /= (self.ov.validator_num_samples * self.ov.validator_sample_size)
         return self.running_avg
+
 
