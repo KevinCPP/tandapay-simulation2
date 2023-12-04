@@ -46,6 +46,8 @@ class Validator:
 
     def validate(self):
         self.running_avg = 0
+        print(f"num samples: {self.ov.validator_num_samples}")
+        print(f"sample size: {self.ov.validator_sample_size}")
         
         for i in range(self.ov.validator_num_samples):
             ev = Environment_Variables.sample(self.ev_vars_to_sample, self.ov.maxsd)
