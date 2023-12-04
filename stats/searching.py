@@ -97,8 +97,8 @@ class Searching:
             cur_value = min_value + (i * step_size)
             self.ev.perc_honest_defectors = cur_value
             validator = Validator(self.ov, cur_value, update_progress_callback)
-            result = validator.validate()
-            results[i] = (result, cur_value)
+            result, avg_actual = validator.validate()
+            results[i] = (result, cur_value, avg_actual)
             total_progress = (i+1)/(steps+1) 
 
         self.ev.perc_honest_defectors = original_value

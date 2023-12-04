@@ -75,17 +75,27 @@ class Validator_Menu:
 
   
     def handle_validation_complete(self, validator_results):
+        validator_results, avg_actual = zip(*validator_results)
+
         # this should only execute when run_validate is done executing:
         result_str = ""
         if len(validator_results) == 1:
-            result_str = f"Validated Result: {validator_results[0]*100}% group collapse for {self.perc_honest_defectors*100}% assigned defectors"
+            result_str = f"""
+            \rValidated Result: {validator_results[0]*100:.4f}% group collapse
+            \rAssigned Defectors: {self.perc_honest_defectors*100:.4f}%
+            \rActual Defectors: {avg_actual[0]:.4f}%
+            """
         else:
             mean = sum(validator_results) / len(validator_results)
             sd = (sum((x - mean) ** 2 for x in validator_results) / len(validator_results)) ** 0.5
-            
+        
+            mean_ad = sum(avg_actual) / len(avg_actual)
+            sd_ad = (sum((x - mean_ad) ** 2 for x in avg_actual) / len(avg_actual)) ** 0.5
+
             result_str = f"""
-            \rValidated Result: {mean*100}% +/- {sd*100}% group collapse for {self.perc_honest_defectors*100}% assigned defectors\n
-            \rRaw Results for {self.uic.ov_obj.validator_repeats} repeats: {validator_results}
+            \rValidated Result: {mean*100:.4f}% +/- {sd*100:.4f}% group collapse
+            \rAssigned Defectors: {self.perc_honest_defectors*100:.4f}%
+            \rActual Defectors: {mean_ad:.4f}% +/- {sd_ad:.4f}%
             """
         
         self.results_window = Results_Window("Validator Results")

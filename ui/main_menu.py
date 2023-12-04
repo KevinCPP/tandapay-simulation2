@@ -152,15 +152,18 @@ class Main_Menu(QMainWindow):
         self.ris_worker.start()
 
     def handle_search_complete(self, results):
-        y, x = zip(*results)
+        y, x, z = zip(*results)
         y = [value * 100 for value in y]
         x = [value * 100 for value in x]
         plt.figure(figsize=(10, 6))
-        plt.plot(x, y, marker='o')
+        plt.plot(x, y, color='blue', marker='o', label='Assigned Defectors')
+        plt.plot(z, y, color='orange', marker='x', label='Actual Defectors')
+        
         plt.title('Intensive Searching Result')
-        plt.xlabel('Percentage of assigned defectors')
+        plt.xlabel('Percentage of Defectors')
         plt.ylabel('Percentage Rate of Group Collapse (wins)')
         plt.grid(True)
+        plt.legend()
         plt.show()
 
     def run_debug(self):

@@ -24,6 +24,7 @@ class Validator:
         
         # where the average will be stored
         self.running_avg = None
+        self.avg_assigned = None
         
         # EV attributes we want to sample
         self.ev_vars_to_sample = [
@@ -46,8 +47,9 @@ class Validator:
 
     def validate(self):
         self.running_avg = 0
-        print(f"num samples: {self.ov.validator_num_samples}")
-        print(f"sample size: {self.ov.validator_sample_size}")
+        self.avg_assigned = 0
+#        print(f"num samples: {self.ov.validator_num_samples}")
+#        print(f"sample size: {self.ov.validator_sample_size}")
         
         for i in range(self.ov.validator_num_samples):
             ev = Environment_Variables.sample(self.ev_vars_to_sample, self.ov.maxsd)
@@ -55,9 +57,11 @@ class Validator:
             pv = Pricing_Variables.sample(self.pv_vars_to_sample, self.ov.maxsd)
             results = exec_simulation_multiple(ev, pv, self.ov.validator_sample_size)
             self.running_avg += results.num_wins
+            self.avg_assigned += results.avg_defectors
             self.pbc(((i+1) / self.ov.validator_num_samples))
         
+        self.avg_assigned /= (self.ov.validator_num_samples) 
         self.running_avg /= (self.ov.validator_num_samples * self.ov.validator_sample_size)
-        return self.running_avg
+        return self.running_avg, self.avg_assigned
 
 
