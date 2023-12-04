@@ -1,37 +1,61 @@
 import numpy as np
 
+from simulation.environment_variables import Environment_Variables
+from simulation.pricing_variables import Pricing_Variables
+from simulation.other_variables import Other_Variables
+
+from simulation.simulation import exec_simulation_multiple
+
 from enum import Enum
 
 import copy
 
+
+
 class Validator:
-    def __init__(self, ev, pv, ov, perc_honest_defectors):
-        # accept an environment variables, pricing variables, and other variables
-        # object for running the simulation within this class instance. We make a
-        # copy since we'll be sampling the variables
-        self.ev = copy.deepcopy(ev)
-        self.pv = copy.deepcopy(pv)
-        self.ov = copy.deepcopy(ov)
+    def __init__(self, ov, perc_honest_defectors, progress_bar_callback=None):
+        # other variables object, will contain information such as the
+        # sample size, number of trials, and the max standard deviations
+        self.ov = ov
         
-        self.ev.perc_honest_defectors = perc_honest_defectors
+        # defector value that we want to validate
+        self.perc_honest_defectors = perc_honest_defectors
+        self.pbc = progress_bar_callback
         
         # where the average will be stored
         self.running_avg = None
         
-        # this dict will enumerate all of the attributes we want to sample while
-        # running validation, but will also make use of it to store the average
-        # sampled values
-        self.ev_vars_to_sample = {
-            # attribute         avg
-            "chance_of_claim" : 0
-            "perc_low_moreale": 0
-            "perc_independent": 0
-        }
-
-        self.pv_vars_to_sample = {
-            # attribute         avg
-
-        }
+        # EV attributes we want to sample
+        self.ev_vars_to_sample = [
+            "chance_of_claim",
+            "perc_low_morale",
+            "perc_independent",
+        ]
+        
+        # PV attributes we want to sample
+        self.pv_vars_to_sample = [
+            "noref_change_floor",
+            "noref_change_ceiling",
+            "noref_ph_leave_floor",
+            "noref_ph_leave_ceiling",
+            "avg_3mo_change_floor",
+            "avg_3mo_change_ceiling",
+            "avg_3mo_ph_leave_floor",
+            "avg_3mo_ph_leave_ceiling",
+        ]
 
     def validate(self):
-         
+        self.running_avg = 0
+        
+        for i in range(self.ov.validator_num_samples):
+            ev = Environment_Variables.sample(self.ev_vars_to_sample, self.ov.maxsd)
+            ev.perc_honest_defectors = self.perc_honest_defectors
+            pv = Pricing_Variables.sample(self.pv_vars_to_sample, self.ov.maxsd)
+            results = exec_simulation_multiple(ev, pv, self.ov.validator_sample_size)
+            self.running_avg += results.num_wins
+            self.pbc(((i+1) / self.ov.validator_num_samples))
+        
+        self.running_avg /= (self.ov.validator_num_samples * self.ov.validator_sample_size)
+        return self.running_avg
+
+

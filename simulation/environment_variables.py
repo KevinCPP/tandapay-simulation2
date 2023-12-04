@@ -1,4 +1,6 @@
 
+from util.biased_random import biased_random
+
 class Environment_Variables:
     """
     This class encapsulates all of the environment variables.
@@ -62,6 +64,19 @@ class Environment_Variables:
             temp_dict[temp_key] = value
 
         self._attribute_limits.update(temp_dict)
+
+    @staticmethod
+    def sample(attributes, max_sd=3):
+        ev = Environment_Variables()
+        
+        if not attributes:
+            raise ValueError("Attributes cannot be None. environment_variables:sample().")
+
+        for attr in attributes:
+            limits = ev.get_limits(attr)
+            setattr(ev, attr, biased_random(limits[0], limits[1], getattr(ev, attr), max_sd))
+        
+        return ev
 
     def get_limits(self, attribute: str):
         if attribute in self._attribute_limits:

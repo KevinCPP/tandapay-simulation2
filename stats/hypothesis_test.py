@@ -22,8 +22,13 @@ def perform_hypothesis_test(mean, std_dev, sample_size, null_value, test_type):
     Returns:
     - p_value: The p-value of the test
     """
+    denom = (std_dev / np.sqrt(sample_size))
+    # if we have such a small value on the bottom
+    if denom == 0:
+        return 0.0
+
     # Calculate the Z-score
-    z_score = (mean - null_value) / (std_dev / np.sqrt(sample_size))
+    z_score = (mean - null_value) / denom
 
     # Calculate the p-value based on the test type
     if test_type == TestTypeEnum.TWOTAILED:

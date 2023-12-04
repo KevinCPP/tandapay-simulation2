@@ -1,12 +1,16 @@
 import ui
+import datetime
+
 from simulation.simulation import *
 from simulation.environment_variables import Environment_Variables
 from simulation.pricing_variables import Pricing_Variables
 from simulation.other_variables import *
 from stats.statistics_runner import Statistics_Runner
+from validation.validator import Validator
 from stats.searching import Searching
 from util.ini_handler import INI_Handler
 from util.results_db import Results_DB
+
 
 class Main:
     def __init__(self):
@@ -19,6 +23,14 @@ class Main:
         self.uic.pv_obj = self.ini_handler.read_pricing_variables()
         self.uic.ov_obj = self.ini_handler.read_other_variables()
         
+        # debugging validator
+#        results = []
+#        for i in range(10):
+#            validator = Validator(self.uic.ov_obj, .23)
+#            results.append(validator.validate())
+#
+#        print(f"validator results: {results}")
+
         # set callbacks
         self.uic.run_simulation = self.run_simulation_callback
         self.uic.run_statistics = self.run_statistics_callback
@@ -30,7 +42,7 @@ class Main:
         self.uic.about = self.run_about_callback
 
         self.uic.history_db_obj = Results_DB()
-
+        
         ui.initialize(self.uic)
 
     def run_simulation_callback(self) -> str:
@@ -50,12 +62,18 @@ class Main:
         self.uic.history_db_obj.add_result("Searching Run", self.version, searching_data.results_str)
         return searching_data
    
-    def run_validate_callback(self):
-        class temp: 
-            def __init__(self):
-                self.results_str = "example"
+    def run_validate_callback(self, perc_honest_defectors, progress_bar_callback=None):
+        validator_runs = []
+        total_progress = 0.0
+        def single_run_progress_callback(progress: float):
+            progress_bar_callback(total_progress + (progress / self.uic.ov_obj.validator_repeats))
 
-        return temp()
+        for i in range(self.uic.ov_obj.validator_repeats):
+            validator = Validator(self.uic.ov_obj, perc_honest_defectors, single_run_progress_callback)
+            validator_runs.append(validator.validate())
+            total_progress = (i+1) / self.uic.ov_obj.validator_repeats
+
+        return validator_runs
 
     def run_debug_callback(self):
         result_dict = exec_simulation_debug(self.uic.ev_obj, self.uic.pv_obj)
@@ -64,6 +82,7 @@ class Main:
         Wrote user record to CSV: {result_dict['user_csv_path']}
         Wrote system record to CSV: {result_dict['sys_csv_path']}
         """
+
     def save_settings_callback(self):
         self.ini_handler.write_environment_variables(self.uic.ev_obj)
         self.ini_handler.write_pricing_variables(self.uic.pv_obj)

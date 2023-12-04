@@ -66,13 +66,16 @@ class Searching:
 
         # results array
         results = [None] * (steps+1)
-
+        
+        # store the original value so it can be restored afterwards
+        original_value = getattr(obj, attribute)
         for i in range(steps+1):
             cur_attr_value = min_value + (i * step_size)
             setattr(obj, attribute, cur_attr_value)
             results_aggregator = exec_simulation_multiple(self.ev, self.pv, self.ov.trial_sample_size)
             results[i] = Result(results_aggregator, attribute, cur_attr_value)
 
+        setattr(obj, attribute, original_value)
         return results
 
     def basic_search(self, attribute: str, min_value, max_value, steps):

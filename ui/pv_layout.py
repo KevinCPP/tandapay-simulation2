@@ -44,6 +44,7 @@ class PV_Layout:
 
     def get_pv_layout(self) -> QVBoxLayout:
         layout = QVBoxLayout()
+        layout.setAlignment(Qt.AlignTop)
         
         header = QLabel("Pricing Variables")
         header_font = QFont()

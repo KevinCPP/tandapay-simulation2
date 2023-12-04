@@ -75,6 +75,10 @@ class INI_Handler:
         ov.test_type                = TestTypeEnum[self.config.get('Other_Variables', 'test_type')]
         ov.test_outcome             = str(self.config.get('Other_Variables', 'test_outcome'))
         ov.value_to_test            = float(self.config.get('Other_Variables', 'value_to_test'))
+        ov.validator_repeats        = int(self.config.get('Other_Variables', 'validator_repeats'))
+        ov.validator_num_samples    = int(self.config.get('Other_Variables', 'validator_num_samples'))
+        ov.validator_sample_size    = int(self.config.get('Other_Variables', 'validator_sample_size'))
+        ov.maxsd                    = int(self.config.get('Other_Variables', 'maxsd'))
 
         return ov
 
@@ -121,6 +125,10 @@ class INI_Handler:
             'test_type'             : ov.test_type.name,
             'test_outcome'          : ov.test_outcome,
             'value_to_test'         : ov.value_to_test,
+            'validator_repeats'     : ov.validator_repeats,
+            'validator_num_samples' : ov.validator_num_samples,
+            'validator_sample_size' : ov.validator_sample_size,
+            'maxsd'                 : ov.maxsd,
         }
         with open(self.path, 'w') as configfile:
             self.config.write(configfile)

@@ -1,4 +1,4 @@
-
+import numpy as np
 
 def biased_random(lower_bound, upper_bound, center, max_sd=3):
     if not lower_bound <= center <= upper_bound:

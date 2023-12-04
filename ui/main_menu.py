@@ -10,8 +10,6 @@ import matplotlib
 matplotlib.use("Qt5Agg")
 
 
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as stats
@@ -22,6 +20,7 @@ from .settings_menu import Settings_Menu
 from .results_menu import Results_Window
 from .history_menu import History_Menu
 from .searching_menu import Searching_Menu
+from .validator_menu import Validator_Menu
 
 class Main_Menu(QMainWindow):
     def __init__(self, ui_context: UI_Context):
@@ -136,11 +135,8 @@ class Main_Menu(QMainWindow):
         self.searching_menu.open_searching_menu()
 
     def run_validate(self):
-        validate_data = self.uic.run_validate()
-        self.results_window = Results_Window("Validate Results")
-        self.results_window.set_results_text(validate_data.results_str)
-        self.results_window.show()
-
+        self.validator_menu = Validator_Menu(self.uic)
+        self.validator_menu.open_validator_menu()
 
     def run_debug(self):
         result_str = self.uic.run_debug()
