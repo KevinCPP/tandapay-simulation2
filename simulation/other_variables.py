@@ -37,8 +37,8 @@ class Other_Variables:
         
         # validator
         self.validator_repeats = 10         # how many times will validator repeat to get a mean/std. dev?
-        self.validator_num_samples = 200    # how many samples will validator use?
-        self.validator_sample_size = 200    # how many runs per sample?
+        self.validator_num_samples = 100    # how many samples will validator use?
+        self.validator_sample_size = 100    # how many runs per sample?
         self.maxsd = 5                      # max standard deviation away from defaults that the min/max allowable values are allowed to be
 
     @property

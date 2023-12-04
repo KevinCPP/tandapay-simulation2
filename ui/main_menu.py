@@ -21,6 +21,8 @@ from .results_menu import Results_Window
 from .history_menu import History_Menu
 from .searching_menu import Searching_Menu
 from .validator_menu import Validator_Menu
+from .progress_bar import Progress_Bar
+from .intensive_searching import *
 
 class Main_Menu(QMainWindow):
     def __init__(self, ui_context: UI_Context):
@@ -66,6 +68,9 @@ class Main_Menu(QMainWindow):
 
         self.run_validate_btn = self.uief.make_push_button_element("Run Validate", None, self.run_validate)
         self.layout.addWidget(self.run_validate_btn)
+
+        self.run_intensive_searching_btn = self.uief.make_push_button_element("Run Intensive Searching", None, self.run_intensive_searching)
+        self.layout.addWidget(self.run_intensive_searching_btn)
 
         self.run_debug_btn = self.uief.make_push_button_element("Run Debug", None, self.run_debug)
         self.layout.addWidget(self.run_debug_btn)
@@ -137,6 +142,26 @@ class Main_Menu(QMainWindow):
     def run_validate(self):
         self.validator_menu = Validator_Menu(self.uic)
         self.validator_menu.open_validator_menu()
+
+    def run_intensive_searching(self):
+        self.progress_bar = Progress_Bar()
+
+        self.ris_worker = IntensiveSearchingWorker(self.uic.run_intensive_searching)
+        self.ris_worker.search_complete.connect(self.handle_search_complete)
+        self.ris_worker.progress_updated.connect(self.progress_bar.update_progress)
+        self.ris_worker.start()
+
+    def handle_search_complete(self, results):
+        y, x = zip(*results)
+        y = [value * 100 for value in y]
+        x = [value * 100 for value in x]
+        plt.figure(figsize=(10, 6))
+        plt.plot(x, y, marker='o')
+        plt.title('Intensive Searching Result')
+        plt.xlabel('Percentage of assigned defectors')
+        plt.ylabel('Percentage Rate of Group Collapse (wins)')
+        plt.grid(True)
+        plt.show()
 
     def run_debug(self):
         result_str = self.uic.run_debug()

@@ -14,6 +14,7 @@ from .hypothesis_test import perform_hypothesis_test
 from .hypothesis_test import TestTypeEnum
 from .statistics_aggregator import Statistics_Aggregator
 from .searching_data import SearchingData
+from validation.validator import Validator
 
 class Result:
     def __init__(self, results_aggregator, attribute, value):
@@ -28,11 +29,13 @@ class Searching:
     implements the siulation search functionality
     """
 
-    def __init__(self, ev, pv, ov):
+    def __init__(self, ev, pv, ov, progress_bar_callback=None):
         self.ev = ev
         self.pv = pv
         self.ov = ov
         
+        self.pbc = progress_bar_callback
+
         self._past_searches = {}
 
     def _test_bounds(self, obj, attribute, min_value, max_value):
@@ -56,7 +59,7 @@ class Searching:
         # return a tuple with the new bounds
         return (min_value, max_value)
 
-    def _perform_search(self, obj, attribute: str, min_value: float, max_value: float, steps: int):
+    def _perform_search(self, obj, attribute: str, min_value: float, max_value: float, steps: int, progress_bar_callback=None):
         # test the min and max values to ensure they are in the correct bounds for the
         # attribute's allowed values.
         min_value, max_value = self._test_bounds(obj, attribute, min_value, max_value)
@@ -76,6 +79,29 @@ class Searching:
             results[i] = Result(results_aggregator, attribute, cur_attr_value)
 
         setattr(obj, attribute, original_value)
+        return results
+
+    def perform_intensive_search_assigned_defectors(self, min_value: float, max_value: float, steps: int, progress_bar_callback=None):
+        total_progress = 0.0
+        def update_progress_callback(progress):
+            progress_bar_callback(total_progress + (progress / (steps+1)))
+
+        min_value, max_value = self._test_bounds(self.ev, "perc_honest_defectors", min_value, max_value)
+
+        step_size = (max_value - min_value) / steps
+
+        results = [None] * (steps+1)
+
+        original_value = self.ev.perc_honest_defectors
+        for i in range(steps+1):
+            cur_value = min_value + (i * step_size)
+            self.ev.perc_honest_defectors = cur_value
+            validator = Validator(self.ov, cur_value, update_progress_callback)
+            result = validator.validate()
+            results[i] = (result, cur_value)
+            total_progress = (i+1)/(steps+1) 
+
+        self.ev.perc_honest_defectors = original_value
         return results
 
     def basic_search(self, attribute: str, min_value, max_value, steps):
@@ -113,7 +139,7 @@ class Searching:
         #print(raw_results.shape)
 
         return linreg_models, raw_results
-    
+   
     def perform_full_search(self, attribute, target_percent, outcome, min_value, max_value, steps, order):
         """
         Performs a search.

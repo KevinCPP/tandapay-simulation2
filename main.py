@@ -1,4 +1,5 @@
 import ui
+import time
 import datetime
 
 from simulation.simulation import *
@@ -32,6 +33,7 @@ class Main:
 #        print(f"validator results: {results}")
 
         # set callbacks
+        self.uic.run_intensive_searching = self.run_intensive_searching_callback
         self.uic.run_simulation = self.run_simulation_callback
         self.uic.run_statistics = self.run_statistics_callback
         self.uic.run_searching = self.run_searching_callback
@@ -44,6 +46,7 @@ class Main:
         self.uic.history_db_obj = Results_DB()
         
         ui.initialize(self.uic)
+
 
     def run_simulation_callback(self) -> str:
         results_aggregator = exec_simulation_multiple(self.uic.ev_obj, self.uic.pv_obj, self.uic.ov_obj.sample_size)
@@ -61,7 +64,12 @@ class Main:
         searching_data = searching.perform_full_search(attribute, target_percent, outcome, min_value, max_value, steps, order)
         self.uic.history_db_obj.add_result("Searching Run", self.version, searching_data.results_str)
         return searching_data
-   
+
+    def run_intensive_searching_callback(self, prog_callback=None):
+        searching = Searching(self.uic.ev_obj, self.uic.pv_obj, self.uic.ov_obj)
+        searching_data = searching.perform_intensive_search_assigned_defectors(0.0, 1.0, 20, prog_callback)
+        return searching_data
+
     def run_validate_callback(self, perc_honest_defectors, progress_bar_callback=None):
         validator_runs = []
         total_progress = 0.0
